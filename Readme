@@ -1,192 +1,116 @@
- PrepAI
+# 🚀 PrepAI
 
-<p align="center">
-  <b>AI-Powered Interview Preparation Platform</b><br>
-  Practice technical interviews, analyze resumes, track DSA progress, generate study plans, and prepare for top companies—all in one place.
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/React-18-blue?logo=react">
-  <img src="https://img.shields.io/badge/Node.js-Express-green?logo=node.js">
-  <img src="https://img.shields.io/badge/MongoDB-Database-green?logo=mongodb">
-  <img src="https://img.shields.io/badge/AI-Groq%20%2B%20Gemini-red">
-  <img src="https://img.shields.io/badge/License-MIT-blue">
-</p>
-
----
-
-# 📌 Overview
-
-PrepAI is a full-stack AI-powered interview preparation platform designed to help students and job seekers prepare for software engineering interviews.
-
-The platform combines mock interviews, resume analysis, DSA tracking, personalized study plans, company-specific roadmaps, analytics, and voice-based interview practice using modern web technologies and free AI models.
+PrepAI is a full-stack AI-powered interview preparation platform designed to help students and job seekers prepare for technical interviews. It combines AI mock interviews, resume analysis, DSA tracking, personalized study plans, company-specific roadmaps, and analytics into one modern application.
 
 ---
 
 # ✨ Features
 
 ### 🎤 AI Mock Interviews
-
-* AI-generated interview questions
-* Voice & text interview modes
-* Real-time evaluation
-* Per-answer feedback
-* Overall interview report
-* Performance score
-
----
+- AI-generated interview questions
+- Role-specific interview sessions
+- Voice & text interview mode
+- Real-time answer evaluation
+- Per-question scoring
+- Comprehensive interview report
 
 ### 📄 Resume Analyzer
-
-* Upload resume
-* AI-powered resume review
-* ATS suggestions
-* Skill gap detection
-* Improvement recommendations
-
----
-
-### 📚 Company Roadmaps
-
-Generate interview preparation roadmaps for:
-
-* Amazon
-* Google
-* Microsoft
-* Meta
-* Adobe
-* Flipkart
-* Atlassian
-* Uber
-* Goldman Sachs
-* Walmart Labs
-* Infosys
-* TCS
-
----
+- AI-powered resume analysis
+- ATS improvement suggestions
+- Skill gap detection
+- Resume enhancement recommendations
 
 ### 💻 DSA Tracker
+- Track solved problems
+- Difficulty-wise progress
+- Topic-wise organization
+- Performance statistics
 
-Track:
-
-* Solved problems
-* Difficulty distribution
-* Topic-wise progress
-* Daily streak
-* Overall statistics
-
----
+### 📚 Company Roadmaps
+Generate AI-powered preparation roadmaps for companies including:
+- Amazon
+- Google
+- Microsoft
+- Meta
+- Adobe
+- Flipkart
+- Atlassian
+- Goldman Sachs
+- Uber
+- Walmart Labs
+- Infosys
+- TCS
 
 ### 📅 Personalized Study Plans
-
-Generate week-by-week preparation plans based on:
-
-* Target company
-* Available study hours
-* Current skill level
-* Interview timeline
-
----
+- Weekly preparation schedules
+- Customized learning roadmap
+- Company-focused preparation
+- AI-generated study strategy
 
 ### 📊 Analytics Dashboard
-
-Visualize your progress using charts:
-
-* Interview scores
-* DSA completion
-* Weekly progress
-* Study consistency
-* Resume improvements
-
----
+- Interview performance
+- DSA progress
+- Weekly analytics
+- Overall preparation insights
 
 ### 🎙️ Voice Mode
-
-Uses the browser's native Web Speech API.
-
-Features:
-
-* Speech Recognition
-* AI Question Reading
-* Hands-free interview experience
-
-Works best on:
-
-* Google Chrome
-* Microsoft Edge
-
----
+- Speech Recognition
+- Speech Synthesis
+- Hands-free interview experience
+- Browser-native Web Speech API
 
 ### 🔐 Authentication
-
-* JWT Authentication
-* Password Hashing (bcrypt)
-* Protected Routes
-* Persistent Login
-
----
-
-# 🛠 Tech Stack
-
-## Frontend
-
-* React 18
-* Vite
-* Tailwind CSS
-* Wouter
-* TanStack Query
-* Axios
-* Recharts
-* Lucide Icons
-
-## Backend
-
-* Node.js
-* Express.js
-* MongoDB
-* Mongoose
-
-## Authentication
-
-* JWT
-* bcryptjs
-
-## AI
-
-Primary
-
-* Groq
-* llama-3.3-70b-versatile
-
-Fallback
-
-* Google Gemini 2.0 Flash
+- JWT Authentication
+- Secure password hashing
+- Protected routes
+- Persistent login sessions
 
 ---
 
-# 🏗 Project Structure
+# 🛠️ Tech Stack
 
-```
-PrepAI
+| Category | Technology |
+|----------|------------|
+| Frontend | React 18, Vite, Tailwind CSS |
+| Routing | Wouter |
+| State Management | TanStack Query |
+| HTTP Client | Axios |
+| Charts | Recharts |
+| Icons | Lucide React |
+| Backend | Node.js, Express.js |
+| Database | MongoDB, Mongoose |
+| Authentication | JWT, bcryptjs |
+| AI | Groq + Gemini |
+| Voice | Web Speech API |
+
+---
+
+# 📁 Project Structure
+
+```text
+PrepAI/
 │
-├── backend
-│   ├── lib
-│   ├── middleware
-│   ├── models
-│   ├── routes
+├── backend/
+│   ├── lib/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── env.js
 │   ├── server.js
 │   └── package.json
 │
-├── frontend
-│   ├── src
-│   │   ├── components
-│   │   ├── contexts
-│   │   ├── pages
-│   │   ├── lib
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── contexts/
+│   │   ├── lib/
+│   │   ├── pages/
 │   │   ├── App.jsx
-│   │   └── main.jsx
-│   ├── package.json
-│   └── vite.config.js
+│   │   ├── main.jsx
+│   │   └── index.css
+│   ├── vite.config.js
+│   ├── tailwind.config.js
+│   └── package.json
 │
 └── README.md
 ```
@@ -195,7 +119,13 @@ PrepAI
 
 # ⚙️ Installation
 
-## Clone Repository
+## Prerequisites
+
+- Node.js 18+
+- MongoDB
+- Git
+
+### Clone the Repository
 
 ```bash
 git clone https://github.com/aditibh19/Prep-Ai.git
@@ -203,9 +133,7 @@ git clone https://github.com/aditibh19/Prep-Ai.git
 cd Prep-Ai
 ```
 
----
-
-## Backend Setup
+### Backend Setup
 
 ```bash
 cd backend
@@ -213,31 +141,29 @@ cd backend
 npm install
 ```
 
-Create `.env`
+Create a `.env` file inside the backend directory.
 
 ```env
 PORT=5000
 
-MONGO_URI=your_mongodb_connection
+MONGO_URI=your_mongodb_connection_string
 
-JWT_SECRET=your_secret
+JWT_SECRET=your_secret_key
 
-GROQ_API_KEY=your_groq_key
+GROQ_API_KEY=your_groq_api_key
 
-GEMINI_API_KEY=optional
+GEMINI_API_KEY=your_gemini_api_key
 
 CLIENT_URL=http://localhost:5173
 ```
 
-Run backend
+Run the backend:
 
 ```bash
 npm run dev
 ```
 
----
-
-## Frontend Setup
+### Frontend Setup
 
 ```bash
 cd frontend
@@ -247,7 +173,7 @@ npm install
 npm run dev
 ```
 
-Visit
+Open:
 
 ```
 http://localhost:5173
@@ -257,86 +183,119 @@ http://localhost:5173
 
 # 🔑 Environment Variables
 
-| Variable       | Required |
-| -------------- | -------- |
-| MONGO_URI      | ✅        |
-| JWT_SECRET     | ✅        |
-| GROQ_API_KEY   | ✅        |
-| GEMINI_API_KEY | Optional |
-| CLIENT_URL     | Optional |
-| PORT           | Optional |
+| Variable | Required | Description |
+|----------|----------|-------------|
+| MONGO_URI | ✅ | MongoDB connection string |
+| JWT_SECRET | ✅ | Secret key for JWT |
+| GROQ_API_KEY | ✅ | Groq AI API Key |
+| GEMINI_API_KEY | Optional | Gemini fallback API Key |
+| CLIENT_URL | Optional | Frontend URL |
+| PORT | Optional | Backend Port |
 
 ---
 
 # 🌐 API Modules
 
-* Authentication
-* Mock Interviews
-* Resume Analyzer
-* DSA Tracker
-* Company Roadmaps
-* Study Plans
-* Analytics
-* Health Check
+## Authentication
+- User Registration
+- User Login
+- Profile Management
+
+## AI Interviews
+- Start Interview
+- Submit Answers
+- AI Evaluation
+- Interview Reports
+
+## Resume Analyzer
+- Resume Analysis
+- Report History
+
+## DSA Tracker
+- Add Problems
+- Update Progress
+- Statistics
+
+## Company Roadmaps
+- Supported Companies
+- AI Roadmap Generation
+
+## Study Plans
+- Generate Plans
+- Weekly Breakdown
+- Plan Management
+
+## Analytics
+- Dashboard Statistics
+- Progress Tracking
 
 ---
 
 # 🤖 AI Architecture
 
-```
+```text
                  User
                    │
                    ▼
-           Express Backend
+            Express Backend
                    │
         ┌──────────┴──────────┐
         │                     │
         ▼                     ▼
-      Groq AI           Gemini AI
+      Groq AI            Gemini AI
    (Primary Model)    (Fallback Model)
 ```
 
 ---
 
-# 📷 Screenshots
+# 🚀 Supported Companies
 
-Add screenshots here after deployment.
+- Amazon
+- Google
+- Microsoft
+- Meta
+- Adobe
+- Flipkart
+- Atlassian
+- Goldman Sachs
+- Uber
+- Walmart Labs
+- Infosys
+- TCS
 
-```
-screenshots/
+---
 
-dashboard.png
+# 🐛 Common Issues
 
-interview.png
-
-analytics.png
-
-resume.png
-
-studyplan.png
-```
+| Issue | Solution |
+|-------|----------|
+| MongoDB Connection Error | Ensure MongoDB is running and MONGO_URI is correct |
+| Invalid JWT | Verify JWT_SECRET is configured properly |
+| CORS Error | Ensure CLIENT_URL matches the frontend URL |
+| AI Not Responding | Check your Groq or Gemini API keys |
+| Voice Mode Not Working | Use Google Chrome or Microsoft Edge |
 
 ---
 
 # 🚀 Future Improvements
 
-* Google Authentication
-* Email Verification
-* Dark / Light Theme
-* Leaderboards
-* Coding Compiler
-* Interview Recording
-* AI Chat Assistant
-* Notifications
-* Docker Support
-* CI/CD Pipeline
+- Google Authentication
+- Email Verification
+- Dark Mode
+- Coding Compiler
+- AI Chat Assistant
+- Leaderboard
+- Docker Support
+- CI/CD Deployment
+- Mobile Application
 
 ---
 
 # 🤝 Contributing
 
-1. Fork the repository
+Contributions are welcome.
 
+1. Fork the repository
 2. Create a feature branch
 
 ```bash
@@ -346,16 +305,16 @@ git checkout -b feature-name
 3. Commit your changes
 
 ```bash
-git commit -m "Add feature"
+git commit -m "Add new feature"
 ```
 
-4. Push
+4. Push to your branch
 
 ```bash
 git push origin feature-name
 ```
 
-5. Open a Pull Request
+5. Create a Pull Request
 
 ---
 
@@ -365,14 +324,14 @@ This project is licensed under the MIT License.
 
 ---
 
-# 👨‍💻 Author
+# 👩‍💻 Author
 
-**Aditi Bhardwaj**
+**Aditi Bhalla**
 
-GitHub
-
-https://github.com/aditibh19
+GitHub: **https://github.com/aditibh19**
 
 ---
 
-⭐ If you like this project, consider giving it a **Star** on GitHub.
+## ⭐ Support
+
+If you found this project helpful, consider giving it a **⭐ Star** on GitHub.

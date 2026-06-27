@@ -1,0 +1,664 @@
+# 🚀 Project Overview: PrepAI – AI-Powered Placement Preparation Platform
+
+## 📌 Problem Statement
+
+Students preparing for placements use multiple platforms:
+
+* LeetCode for DSA
+* ChatGPT for doubts
+* InterviewBit/Pramp for mock interviews
+* Resume analyzers for ATS checks
+* Notes in different apps
+
+There is no single platform that combines **placement preparation, AI mentoring, mock interviews, resume analysis, and progress tracking**.
+
+**PrepAI** solves this by acting as an AI placement mentor.
+
+---
+
+# 🎯 Objective
+
+Develop a full-stack web application that helps students prepare for technical placements through:
+
+* Personalized preparation
+* AI-driven mock interviews
+* Resume analysis
+* DSA progress tracking
+* Company-specific roadmaps
+* Performance analytics
+
+---
+
+# 👥 User Roles
+
+### Student
+
+* Register/Login
+* Track preparation
+* Take AI interviews
+* Upload resume
+* View analytics
+* Practice company-wise questions
+
+### Admin (Optional)
+
+* Manage users
+* Manage companies
+* View platform analytics
+
+---
+
+# 🛠 Tech Stack
+
+## Frontend
+
+* React.js
+* Tailwind CSS
+* React Router
+* Axios
+* Socket.io Client
+* Recharts
+
+---
+
+## Backend
+
+* Node.js
+* Express.js
+* Socket.io
+* JWT Authentication
+* bcrypt
+
+---
+
+## Database
+
+* MongoDB Atlas
+* Mongoose
+
+---
+
+## AI
+
+* Gemini API
+
+---
+
+## Other Tools
+
+* Multer (Resume Upload)
+* pdf-parse (PDF Extraction)
+* Cloudinary (optional)
+* Nodemailer (optional)
+
+---
+
+# 📂 Main Modules
+
+---
+
+# 1️⃣ Authentication Module
+
+### Features
+
+* Register
+* Login
+* Forgot Password (optional)
+* JWT Authentication
+* Protected Routes
+
+---
+
+# 2️⃣ Dashboard Module
+
+Student sees
+
+```
+Welcome Aditi
+
+Today's Goal
+
+DSA Progress
+
+Upcoming Mock Interview
+
+Resume Score
+
+Average Interview Score
+
+Weekly Progress
+
+Recent Activity
+```
+
+Dashboard updates automatically.
+
+---
+
+# 3️⃣ DSA Tracker Module
+
+Students can
+
+✅ Add solved questions
+
+✅ Mark revision required
+
+✅ Filter by
+
+* Arrays
+* Trees
+* Graphs
+* DP
+
+Track
+
+* Easy
+* Medium
+* Hard
+
+Analytics
+
+```
+Solved
+
+250
+
+Pending
+
+40
+
+Revision
+
+18
+```
+
+Charts
+
+* Topic-wise graph
+* Difficulty graph
+* Weekly streak
+
+---
+
+# 4️⃣ AI Resume Analyzer
+
+User uploads PDF.
+
+System
+
+```
+Upload PDF
+
+↓
+
+Extract Text
+
+↓
+
+Gemini
+
+↓
+
+Generate ATS Report
+
+↓
+
+Store Report
+```
+
+Report includes
+
+* ATS Score
+* Missing Skills
+* Resume Improvements
+* Projects Feedback
+* Interview Questions from Resume
+
+---
+
+# 5️⃣ AI Mock Interview ⭐
+
+This is the biggest module.
+
+---
+
+## Step 1
+
+Choose
+
+```
+Role
+
+Frontend
+
+Backend
+
+Java
+
+MERN
+
+SDE
+
+Difficulty
+
+Easy
+
+Medium
+
+Hard
+```
+
+---
+
+## Step 2
+
+Interview Starts
+
+AI says
+
+> Welcome Aditi.
+
+> Today we'll conduct a Backend Developer interview.
+
+> Let's begin.
+
+---
+
+## Step 3
+
+Question appears
+
+```
+Explain REST API.
+```
+
+---
+
+## Step 4
+
+User answers
+
+Either
+
+* Text
+
+or
+
+* Voice (Future)
+
+---
+
+## Step 5
+
+Human-like Cross Questioning
+
+Instead of next question
+
+AI asks
+
+```
+Interesting.
+
+You mentioned statelessness.
+
+Can you explain why REST is stateless?
+
+What happens if the server crashes?
+
+Why not use GraphQL?
+```
+
+This makes interview feel real.
+
+---
+
+## Step 6
+
+Adaptive Interview
+
+Backend decides
+
+If score high
+
+↓
+
+Harder questions
+
+If score low
+
+↓
+
+Simpler questions
+
+Interview adapts dynamically.
+
+---
+
+## Step 7
+
+Live Feedback
+
+After every answer
+
+```
+Score
+
+8/10
+
+Good
+
+Need better explanation
+
+Mention HTTP Methods
+```
+
+---
+
+## Step 8
+
+Interview Ends
+
+Generate
+
+```
+Overall Score
+
+Confidence
+
+Communication
+
+Technical Skills
+
+Strong Areas
+
+Weak Areas
+
+Recommended Topics
+```
+
+---
+
+# 6️⃣ Company Preparation Module
+
+Student chooses
+
+```
+Amazon
+
+Google
+
+Adobe
+
+Microsoft
+
+Flipkart
+
+Atlassian
+```
+
+AI generates
+
+* Company roadmap
+* Frequently asked topics
+* Interview questions
+* Preparation strategy
+
+---
+
+# 7️⃣ Personalized Study Planner
+
+Student enters
+
+```
+Time Left
+
+30 days
+
+Target
+
+Amazon
+```
+
+AI creates
+
+```
+Week 1
+
+Arrays
+
+Strings
+
+Week 2
+
+Trees
+
+Graphs
+
+Week 3
+
+DBMS
+
+OS
+
+Week 4
+
+Mock Interviews
+```
+
+---
+
+# 8️⃣ Weak Topic Analyzer
+
+System analyzes
+
+* Interview scores
+* DSA tracker
+* Resume
+
+Example
+
+```
+Weak
+
+Dynamic Programming
+
+DBMS
+
+OS
+
+Strong
+
+React
+
+JavaScript
+
+Node
+```
+
+---
+
+# 9️⃣ Analytics Dashboard
+
+Charts
+
+Interview Score Trend
+
+DSA Progress
+
+Resume Score
+
+Topic-wise Strength
+
+Weekly Study Hours
+
+Mock Interview History
+
+---
+
+# 🔟 Profile Module
+
+Student profile
+
+Skills
+
+Projects
+
+Resume
+
+Target Company
+
+Target Role
+
+Preparation Progress
+
+---
+
+# 1️⃣1️⃣ History Module
+
+Stores
+
+Every interview
+
+Every AI feedback
+
+Every resume analysis
+
+Every roadmap
+
+Search old interviews.
+
+---
+
+# Database Collections
+
+```
+Users
+
+Problems
+
+InterviewSessions
+
+ConversationMessages
+
+InterviewReports
+
+ResumeReports
+
+StudyPlans
+
+Companies
+```
+
+---
+
+# Socket.io Usage
+
+Used for
+
+Real-time interview
+
+```
+AI asks question
+
+↓
+
+User answers
+
+↓
+
+Backend
+
+↓
+
+Gemini
+
+↓
+
+Cross Question
+
+↓
+
+Frontend updates instantly
+```
+
+No refresh required.
+
+---
+
+# AI Features
+
+✅ Resume Analysis
+
+✅ ATS Score
+
+✅ Interview Generator
+
+✅ Cross Questioning
+
+✅ Answer Evaluation
+
+✅ Weak Topic Detection
+
+✅ Study Planner
+
+✅ Company Preparation
+
+---
+
+# Folder Structure
+
+```
+client/
+
+components/
+
+pages/
+
+context/
+
+services/
+
+hooks/
+
+layouts/
+
+server/
+
+controllers/
+
+routes/
+
+models/
+
+middleware/
+
+services/
+
+socket/
+
+config/
+
+utils/
+```
+
+---
+
+# Why This Project Stands Out
+
+Unlike many student projects, this isn't just an AI chatbot with a different UI. It combines several capabilities into one coherent platform:
+
+* **Real-time interview simulation** using Socket.io instead of static Q&A.
+* **Adaptive interviews** where follow-up questions depend on the candidate's previous answers.
+* **AI-powered resume analysis** integrated into the same workflow.
+* **DSA progress tracking** and **company-specific preparation** in one dashboard.
+* **Analytics and personalized study plans** based on user performance over time.
+
+It demonstrates full-stack development, authentication, database design, REST APIs, real-time communication, AI integration, prompt engineering, file handling, and dashboard analytics—all within a single product.
+
+## One suggestion that will impress interviewers even more
+
+Instead of calling it **"AI Placement Preparation Platform"**, give it a product name, for example:
+
+**PrepAI – Your Personal AI Placement Mentor**
+
+Having a branded product name, consistent UI, deployment, documentation, and a polished demo makes it feel like a real SaaS application rather than a college project, which can make a stronger impression during placements.

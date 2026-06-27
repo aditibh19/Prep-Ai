@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #080808;
+    color: #f0f0f0;
+    /* Space Grotesk for body text — sharp, modern, highly legible */
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Outfit for all headings — geometric, bold, clean */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+  }
+
+  h1 { font-size: 2rem;   font-weight: 800; }
+  h2 { font-size: 1.5rem; font-weight: 700; }
+  h3 { font-size: 1.2rem; font-weight: 600; }
+
+  /* Mono stays as-is for code/labels */
+  .font-mono, code, pre {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    font-size: 0.8em;
+    letter-spacing: 0.02em;
+  }
+
+  input, textarea, select {
+    background: #111;
+    border: 1px solid #1e1e1e;
+    color: #f0f0f0;
+    border-radius: 2px;
+    padding: 0.5rem 0.75rem;
+    width: 100%;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.875rem;
+    transition: border-color 0.15s;
+  }
+  input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: #EF2222;
+  }
+
+  select option { background: #111; }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #222; border-radius: 2px; }
+}
+
+@layer utilities {
+  /* Heading utility to apply Outfit anywhere */
+  .font-display {
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: -0.03em;
+  }
+
+  /* Voice waveform bars */
+  .voice-bar { animation: voiceBar 0.8s ease-in-out infinite; }
+  .voice-bar:nth-child(2) { animation-delay: 0.1s; }
+  .voice-bar:nth-child(3) { animation-delay: 0.2s; }
+  .voice-bar:nth-child(4) { animation-delay: 0.3s; }
+  .voice-bar:nth-child(5) { animation-delay: 0.15s; }
+
+  @keyframes voiceBar {
+    0%, 100% { transform: scaleY(0.3); }
+    50%       { transform: scaleY(1);   }
+  }
+
+  @keyframes pulseRing {
+    0%   { transform: scale(1);   opacity: 0.8; }
+    100% { transform: scale(1.6); opacity: 0;   }
+  }
+}

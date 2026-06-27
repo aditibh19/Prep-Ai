@@ -1,0 +1,1353 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: PrepAI – AI Placement Mentor API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: Auth
+    description: Browser and mobile authentication endpoints.
+  - name: dashboard
+    description: Dashboard summary
+  - name: dsa
+    description: DSA problem tracker
+  - name: resume
+    description: Resume analysis
+  - name: interviews
+    description: AI mock interviews
+  - name: companies
+    description: Company-specific preparation
+  - name: studyPlans
+    description: Personalized study plans
+  - name: analytics
+    description: Analytics and progress tracking
+  - name: profile
+    description: User profile
+
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  # Auth
+  /auth/user:
+    get:
+      tags: [Auth]
+      operationId: getCurrentAuthUser
+      summary: Get the currently authenticated user
+      parameters:
+        - $ref: '#/components/parameters/AuthorizationSessionHeader'
+        - $ref: '#/components/parameters/SessionCookie'
+      responses:
+        '200':
+          description: Auth status resolved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthUserEnvelope'
+  /login:
+    get:
+      tags: [Auth]
+      operationId: beginBrowserLogin
+      summary: Start the browser OIDC login flow
+      parameters:
+        - name: returnTo
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '302':
+          description: Redirect to the OIDC authorization endpoint.
+  /callback:
+    get:
+      tags: [Auth]
+      operationId: handleBrowserLoginCallback
+      summary: Complete the browser OIDC login flow
+      parameters:
+        - name: code
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: state
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: iss
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uri
+      responses:
+        '302':
+          description: Redirect to the returnTo path on success.
+  /logout:
+    get:
+      tags: [Auth]
+      operationId: logoutBrowserSession
+      summary: Clear the session and begin OIDC logout
+      parameters:
+        - $ref: '#/components/parameters/AuthorizationSessionHeader'
+        - $ref: '#/components/parameters/SessionCookie'
+        - name: returnTo
+          in: query
+          required: false
+          schema:
+            type: string
+            default: /
+      responses:
+        '302':
+          description: Redirect to the OIDC provider logout URL.
+  /mobile-auth/token-exchange:
+    post:
+      tags: [Auth]
+      operationId: exchangeMobileAuthorizationCode
+      summary: Exchange a mobile OIDC code for a session token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MobileTokenExchangeRequest'
+      responses:
+        '200':
+          description: Session created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MobileTokenExchangeSuccess'
+        '400':
+          description: Missing or invalid required fields.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '401':
+          description: Token did not contain usable claims.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '500':
+          description: Token exchange failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+  /mobile-auth/logout:
+    post:
+      tags: [Auth]
+      operationId: logoutMobileSession
+      summary: Delete a mobile session token
+      parameters:
+        - $ref: '#/components/parameters/AuthorizationSessionHeader'
+      responses:
+        '200':
+          description: Logout processed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogoutSuccess'
+
+  # Dashboard
+  /dashboard/summary:
+    get:
+      operationId: getDashboardSummary
+      tags: [dashboard]
+      summary: Get dashboard summary for the current user
+      responses:
+        "200":
+          description: Dashboard summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  # DSA Tracker
+  /dsa/problems:
+    get:
+      operationId: listDsaProblems
+      tags: [dsa]
+      summary: List DSA problems for the current user
+      parameters:
+        - name: topic
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: difficulty
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of DSA problems
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DsaProblem"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    post:
+      operationId: createDsaProblem
+      tags: [dsa]
+      summary: Add a DSA problem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DsaProblemInput"
+      responses:
+        "201":
+          description: Created problem
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DsaProblem"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /dsa/problems/{id}:
+    get:
+      operationId: getDsaProblem
+      tags: [dsa]
+      summary: Get a DSA problem by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: DSA problem
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DsaProblem"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    patch:
+      operationId: updateDsaProblem
+      tags: [dsa]
+      summary: Update a DSA problem
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DsaProblemUpdate"
+      responses:
+        "200":
+          description: Updated problem
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DsaProblem"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    delete:
+      operationId: deleteDsaProblem
+      tags: [dsa]
+      summary: Delete a DSA problem
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /dsa/stats:
+    get:
+      operationId: getDsaStats
+      tags: [dsa]
+      summary: Get DSA stats for the current user
+      responses:
+        "200":
+          description: DSA stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DsaStats"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  # Resume Analyzer
+  /resume/analyze:
+    post:
+      operationId: analyzeResume
+      tags: [resume]
+      summary: Analyze a resume (text content)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResumeAnalysisInput"
+      responses:
+        "201":
+          description: Resume analysis report
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResumeReport"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /resume/reports:
+    get:
+      operationId: listResumeReports
+      tags: [resume]
+      summary: List resume analysis reports for the current user
+      responses:
+        "200":
+          description: List of reports
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ResumeReport"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /resume/reports/{id}:
+    get:
+      operationId: getResumeReport
+      tags: [resume]
+      summary: Get a specific resume report
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Resume report
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResumeReport"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  # Mock Interviews
+  /interviews:
+    get:
+      operationId: listInterviews
+      tags: [interviews]
+      summary: List interview sessions for the current user
+      responses:
+        "200":
+          description: List of interview sessions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/InterviewSession"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    post:
+      operationId: startInterview
+      tags: [interviews]
+      summary: Start a new mock interview session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InterviewStartInput"
+      responses:
+        "201":
+          description: Interview session started
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InterviewSession"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /interviews/{id}:
+    get:
+      operationId: getInterview
+      tags: [interviews]
+      summary: Get an interview session with messages
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Interview session with messages
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InterviewSessionWithMessages"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /interviews/{id}/answer:
+    post:
+      operationId: submitInterviewAnswer
+      tags: [interviews]
+      summary: Submit an answer to the current interview question
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InterviewAnswerInput"
+      responses:
+        "200":
+          description: AI response with follow-up or next question
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InterviewAiResponse"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /interviews/{id}/end:
+    post:
+      operationId: endInterview
+      tags: [interviews]
+      summary: End the interview and generate a full report
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Interview report
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InterviewReport"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /interviews/{id}/report:
+    get:
+      operationId: getInterviewReport
+      tags: [interviews]
+      summary: Get the report for a completed interview
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Interview report
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InterviewReport"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  # Companies
+  /companies:
+    get:
+      operationId: listCompanies
+      tags: [companies]
+      summary: List available companies
+      responses:
+        "200":
+          description: List of companies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Company"
+
+  /companies/{id}/roadmap:
+    post:
+      operationId: generateCompanyRoadmap
+      tags: [companies]
+      summary: Generate AI preparation roadmap for a company
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Company roadmap
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompanyRoadmap"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  # Study Plans
+  /study-plans:
+    get:
+      operationId: listStudyPlans
+      tags: [studyPlans]
+      summary: List study plans for the current user
+      responses:
+        "200":
+          description: List of study plans
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StudyPlan"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    post:
+      operationId: createStudyPlan
+      tags: [studyPlans]
+      summary: Generate a personalized study plan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudyPlanInput"
+      responses:
+        "201":
+          description: Generated study plan
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudyPlan"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /study-plans/{id}:
+    get:
+      operationId: getStudyPlan
+      tags: [studyPlans]
+      summary: Get a study plan by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Study plan
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudyPlan"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  # Analytics
+  /analytics/overview:
+    get:
+      operationId: getAnalyticsOverview
+      tags: [analytics]
+      summary: Get analytics overview for the current user
+      responses:
+        "200":
+          description: Analytics overview
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalyticsOverview"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  # Profile
+  /profile:
+    get:
+      operationId: getProfile
+      tags: [profile]
+      summary: Get the current user's profile
+      responses:
+        "200":
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    patch:
+      operationId: updateProfile
+      tags: [profile]
+      summary: Update the current user's profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserProfileUpdate"
+      responses:
+        "200":
+          description: Updated profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+components:
+  parameters:
+    AuthorizationSessionHeader:
+      name: Authorization
+      in: header
+      required: false
+      description: Opaque session token — `Bearer <sid>`.
+      schema:
+        type: string
+    SessionCookie:
+      name: sid
+      in: cookie
+      required: false
+      description: Browser session cookie.
+      schema:
+        type: string
+
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    # Auth schemas
+    AuthUser:
+      type: object
+      required: [id, email, firstName, lastName, profileImageUrl]
+      properties:
+        id:
+          type: string
+        email:
+          type: [string, 'null']
+          format: email
+        firstName:
+          type: [string, 'null']
+        lastName:
+          type: [string, 'null']
+        profileImageUrl:
+          type: [string, 'null']
+    AuthUserEnvelope:
+      type: object
+      required: [user]
+      properties:
+        user:
+          oneOf:
+            - $ref: '#/components/schemas/AuthUser'
+            - type: 'null'
+    MobileTokenExchangeRequest:
+      type: object
+      required: [code, code_verifier, redirect_uri, state]
+      properties:
+        code:
+          type: string
+          minLength: 1
+        code_verifier:
+          type: string
+          minLength: 1
+        redirect_uri:
+          type: string
+          minLength: 1
+          format: uri
+        state:
+          type: string
+          minLength: 1
+        nonce:
+          type: string
+          minLength: 1
+    MobileTokenExchangeSuccess:
+      type: object
+      required: [token]
+      properties:
+        token:
+          type: string
+    LogoutSuccess:
+      type: object
+      required: [success]
+      properties:
+        success:
+          type: boolean
+          const: true
+    ErrorEnvelope:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+
+    # Dashboard
+    DashboardSummary:
+      type: object
+      required: [dsaSolved, dsaPending, avgInterviewScore, resumeScore, recentActivity, weeklyProgress, upcomingInterviews, weakTopics]
+      properties:
+        dsaSolved:
+          type: integer
+        dsaPending:
+          type: integer
+        dsaRevision:
+          type: integer
+        avgInterviewScore:
+          type: ["number", "null"]
+        resumeScore:
+          type: ["number", "null"]
+        recentActivity:
+          type: array
+          items:
+            $ref: "#/components/schemas/ActivityItem"
+        weeklyProgress:
+          type: array
+          items:
+            $ref: "#/components/schemas/WeeklyProgressItem"
+        upcomingInterviews:
+          type: integer
+        weakTopics:
+          type: array
+          items:
+            type: string
+    ActivityItem:
+      type: object
+      required: [type, description, createdAt]
+      properties:
+        type:
+          type: string
+        description:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    WeeklyProgressItem:
+      type: object
+      required: [day, problemsSolved, interviewsDone]
+      properties:
+        day:
+          type: string
+        problemsSolved:
+          type: integer
+        interviewsDone:
+          type: integer
+
+    # DSA
+    DsaProblem:
+      type: object
+      required: [id, userId, title, topic, difficulty, status, createdAt]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: string
+        title:
+          type: string
+        topic:
+          type: string
+        difficulty:
+          type: string
+        status:
+          type: string
+        notes:
+          type: ["string", "null"]
+        link:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    DsaProblemInput:
+      type: object
+      required: [title, topic, difficulty, status]
+      properties:
+        title:
+          type: string
+          minLength: 1
+        topic:
+          type: string
+        difficulty:
+          type: string
+          enum: [Easy, Medium, Hard]
+        status:
+          type: string
+          enum: [Solved, Pending, Revision]
+        notes:
+          type: string
+        link:
+          type: string
+    DsaProblemUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        topic:
+          type: string
+        difficulty:
+          type: string
+          enum: [Easy, Medium, Hard]
+        status:
+          type: string
+          enum: [Solved, Pending, Revision]
+        notes:
+          type: string
+        link:
+          type: string
+    DsaStats:
+      type: object
+      required: [total, solved, pending, revision, byTopic, byDifficulty, weeklyStreak]
+      properties:
+        total:
+          type: integer
+        solved:
+          type: integer
+        pending:
+          type: integer
+        revision:
+          type: integer
+        byTopic:
+          type: array
+          items:
+            $ref: "#/components/schemas/TopicCount"
+        byDifficulty:
+          type: array
+          items:
+            $ref: "#/components/schemas/DifficultyCount"
+        weeklyStreak:
+          type: array
+          items:
+            $ref: "#/components/schemas/StreakDay"
+    TopicCount:
+      type: object
+      required: [topic, count]
+      properties:
+        topic:
+          type: string
+        count:
+          type: integer
+        solved:
+          type: integer
+    DifficultyCount:
+      type: object
+      required: [difficulty, count, solved]
+      properties:
+        difficulty:
+          type: string
+        count:
+          type: integer
+        solved:
+          type: integer
+    StreakDay:
+      type: object
+      required: [date, count]
+      properties:
+        date:
+          type: string
+        count:
+          type: integer
+
+    # Resume
+    ResumeReport:
+      type: object
+      required: [id, userId, fileName, atsScore, missingSkills, improvements, projectsFeedback, interviewQuestions, createdAt]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: string
+        fileName:
+          type: string
+        atsScore:
+          type: number
+        missingSkills:
+          type: array
+          items:
+            type: string
+        improvements:
+          type: array
+          items:
+            type: string
+        projectsFeedback:
+          type: string
+        interviewQuestions:
+          type: array
+          items:
+            type: string
+        rawText:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+    ResumeAnalysisInput:
+      type: object
+      required: [fileName, resumeText]
+      properties:
+        fileName:
+          type: string
+          minLength: 1
+        resumeText:
+          type: string
+          minLength: 1
+
+    # Interviews
+    InterviewSession:
+      type: object
+      required: [id, userId, role, difficulty, status, createdAt]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: string
+        role:
+          type: string
+        difficulty:
+          type: string
+        status:
+          type: string
+        overallScore:
+          type: ["number", "null"]
+        questionCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    InterviewSessionWithMessages:
+      type: object
+      required: [id, userId, role, difficulty, status, messages, createdAt]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: string
+        role:
+          type: string
+        difficulty:
+          type: string
+        status:
+          type: string
+        overallScore:
+          type: ["number", "null"]
+        messages:
+          type: array
+          items:
+            $ref: "#/components/schemas/InterviewMessage"
+        createdAt:
+          type: string
+          format: date-time
+    InterviewMessage:
+      type: object
+      required: [id, sessionId, role, content, createdAt]
+      properties:
+        id:
+          type: integer
+        sessionId:
+          type: integer
+        role:
+          type: string
+        content:
+          type: string
+        score:
+          type: ["number", "null"]
+        feedback:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+    InterviewStartInput:
+      type: object
+      required: [role, difficulty]
+      properties:
+        role:
+          type: string
+          enum: [Frontend, Backend, Java, MERN, SDE, Full Stack]
+        difficulty:
+          type: string
+          enum: [Easy, Medium, Hard]
+    InterviewAnswerInput:
+      type: object
+      required: [answer]
+      properties:
+        answer:
+          type: string
+          minLength: 1
+    InterviewAiResponse:
+      type: object
+      required: [message, type]
+      properties:
+        message:
+          type: string
+        type:
+          type: string
+          enum: [cross_question, next_question, end]
+        score:
+          type: ["number", "null"]
+        feedback:
+          type: ["string", "null"]
+        questionNumber:
+          type: integer
+    InterviewReport:
+      type: object
+      required: [sessionId, overallScore, confidence, communication, technicalSkills, strongAreas, weakAreas, recommendedTopics]
+      properties:
+        sessionId:
+          type: integer
+        overallScore:
+          type: number
+        confidence:
+          type: number
+        communication:
+          type: number
+        technicalSkills:
+          type: number
+        strongAreas:
+          type: array
+          items:
+            type: string
+        weakAreas:
+          type: array
+          items:
+            type: string
+        recommendedTopics:
+          type: array
+          items:
+            type: string
+
+    # Companies
+    Company:
+      type: object
+      required: [id, name, topics, difficulty]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        logoUrl:
+          type: ["string", "null"]
+        topics:
+          type: array
+          items:
+            type: string
+        difficulty:
+          type: string
+    CompanyRoadmap:
+      type: object
+      required: [companyId, companyName, frequentTopics, interviewQuestions, preparationStrategy, estimatedDays]
+      properties:
+        companyId:
+          type: integer
+        companyName:
+          type: string
+        frequentTopics:
+          type: array
+          items:
+            type: string
+        interviewQuestions:
+          type: array
+          items:
+            type: string
+        preparationStrategy:
+          type: string
+        estimatedDays:
+          type: integer
+
+    # Study Plans
+    StudyPlan:
+      type: object
+      required: [id, userId, targetCompany, daysLeft, weeks, createdAt]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: string
+        targetCompany:
+          type: string
+        daysLeft:
+          type: integer
+        weeks:
+          type: array
+          items:
+            $ref: "#/components/schemas/StudyWeek"
+        createdAt:
+          type: string
+          format: date-time
+    StudyWeek:
+      type: object
+      required: [week, topics, description]
+      properties:
+        week:
+          type: integer
+        topics:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+    StudyPlanInput:
+      type: object
+      required: [targetCompany, daysLeft]
+      properties:
+        targetCompany:
+          type: string
+          minLength: 1
+        daysLeft:
+          type: integer
+          minimum: 1
+
+    # Analytics
+    AnalyticsOverview:
+      type: object
+      required: [interviewScoreTrend, dsaProgressByTopic, topicStrength, weeklyStudyHours, interviewHistory, totalInterviews, avgScore]
+      properties:
+        interviewScoreTrend:
+          type: array
+          items:
+            $ref: "#/components/schemas/ScoreTrendItem"
+        dsaProgressByTopic:
+          type: array
+          items:
+            $ref: "#/components/schemas/TopicCount"
+        topicStrength:
+          type: array
+          items:
+            $ref: "#/components/schemas/TopicStrength"
+        weeklyStudyHours:
+          type: array
+          items:
+            $ref: "#/components/schemas/WeeklyHours"
+        interviewHistory:
+          type: array
+          items:
+            $ref: "#/components/schemas/InterviewSession"
+        totalInterviews:
+          type: integer
+        avgScore:
+          type: ["number", "null"]
+    ScoreTrendItem:
+      type: object
+      required: [date, score, role]
+      properties:
+        date:
+          type: string
+          format: date-time
+        score:
+          type: number
+        role:
+          type: string
+    TopicStrength:
+      type: object
+      required: [topic, strength]
+      properties:
+        topic:
+          type: string
+        strength:
+          type: string
+          enum: [Strong, Weak, Moderate]
+        score:
+          type: number
+    WeeklyHours:
+      type: object
+      required: [week, hours]
+      properties:
+        week:
+          type: string
+        hours:
+          type: number
+
+    # Profile
+    UserProfile:
+      type: object
+      required: [userId, skills, targetCompany, targetRole, preparationProgress]
+      properties:
+        userId:
+          type: string
+        skills:
+          type: array
+          items:
+            type: string
+        projects:
+          type: array
+          items:
+            type: string
+        targetCompany:
+          type: ["string", "null"]
+        targetRole:
+          type: ["string", "null"]
+        preparationProgress:
+          type: number
+        bio:
+          type: ["string", "null"]
+        college:
+          type: ["string", "null"]
+        graduationYear:
+          type: ["integer", "null"]
+    UserProfileUpdate:
+      type: object
+      properties:
+        skills:
+          type: array
+          items:
+            type: string
+        projects:
+          type: array
+          items:
+            type: string
+        targetCompany:
+          type: string
+        targetRole:
+          type: string
+        bio:
+          type: string
+        college:
+          type: string
+        graduationYear:
+          type: integer

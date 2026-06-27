@@ -1,0 +1,1 @@
+- [PrepAI schema and auth quirks](prepai-schema-quirks.md) — sessions table format, drizzle-zod identity columns, replit-auth-web tsconfig, React Query v5 refetchInterval API

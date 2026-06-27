@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # PrepAI 🚀
 
 A full-stack AI-powered interview preparation platform built with React, Node.js, and MongoDB. PrepAI helps candidates prepare for technical interviews with mock interviews, DSA tracking, resume analysis, company-specific roadmaps, and personalized study plans — all powered by free AI providers (Groq + Gemini).

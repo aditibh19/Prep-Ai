@@ -50,8 +50,8 @@ A full-stack AI-powered interview preparation platform built with React, Node.js
 
 ### Company Roadmap
 
-![Company Selection](Screenshot/roadma1.png)
-![Generated Company Roadmap](Screenshot/roadmap2.png)
+(Screenshot/roadma1.png)
+(Screenshot/roadmap2.png)
 
 ### DSA Tracker
 

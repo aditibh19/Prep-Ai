@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ─── ROUTES (IMPORTANT FIX HERE) ─────────────
-app.use("/auth", authRoutes);               // ✅ FIXED
+app.use("/api/auth", authRoutes);      // ✅ FIXED
 app.use("/api/dsa", dsaRoutes);
 app.use("/api/interviews", interviewRoutes);
 app.use("/api/resume", resumeRoutes);

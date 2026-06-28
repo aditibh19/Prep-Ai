@@ -17,6 +17,48 @@ A full-stack AI-powered interview preparation platform built with React, Node.js
 - **Authentication** — JWT-based auth with protected routes
 
 ---
+## 📸 Screenshots
+
+### Landing Page
+
+![Landing Page](screenshots/landing1.png)
+![Landing Page](screenshots/landing2.png)
+
+### Sign Up
+
+![Dashboard](screenshots/Signup.png)
+
+### Login
+
+![Dashboard](screenshots/Login.png)
+
+### Dashboard
+
+![Dashboard](screenshots/dashboard.png)
+
+### AI Mock Interview
+
+![Interview](screenshots/interview.png)
+
+### Interview Report
+
+![Report](screenshots/report.png)
+
+### Resume Analyzer
+
+![Resume](screenshots/resume.png)
+
+### Company Roadmap
+
+![Roadmap](screenshots/roadmap.png)
+
+### DSA Tracker
+
+![DSA](screenshots/dsa.png)
+
+### Analytics
+
+![Analytics](screenshots/analytics.png)
 
 ## 🛠️ Tech Stack
 

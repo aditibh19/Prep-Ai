@@ -50,15 +50,24 @@ A full-stack AI-powered interview preparation platform built with React, Node.js
 
 ### Company Roadmap
 
-![Roadmap](screenshots/roadmap.png)
+![Roadmap](screenshots/roadma1.png)
+![Roadmap](screenshots/roadmap2.png)
 
 ### DSA Tracker
 
 ![DSA](screenshots/dsa.png)
 
+### Study Plan
+
+![Resume](screenshots/studyplan.png)
+
 ### Analytics
 
 ![Analytics](screenshots/analytics.png)
+
+### Profile
+
+![Analytics](screenshots/profile.png)
 
 ## 🛠️ Tech Stack
 

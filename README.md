@@ -21,53 +21,53 @@ A full-stack AI-powered interview preparation platform built with React, Node.js
 
 ### Landing Page
 
-![Landing Page](screenshots/landing1.png)
-![Landing Page](screenshots/landing2.png)
+![Landing Page](screenshot/landing1.png)
+![Landing Page](screenshot/landing2.png)
 
 ### Sign Up
 
-![Dashboard](screenshots/Signup.png)
+![Dashboard](screenshot/Signup.png)
 
 ### Login
 
-![Dashboard](screenshots/Login.png)
+![Dashboard](screenshot/Login.png)
 
 ### Dashboard
 
-![Dashboard](screenshots/dashboard.png)
+![Dashboard](screenshot/dashboard.png)
 
 ### AI Mock Interview
 
-![Interview](screenshots/interview.png)
+![Interview](screenshot/interview.png)
 
 ### Interview Report
 
-![Report](screenshots/report.png)
+![Report](screenshot/report.png)
 
 ### Resume Analyzer
 
-![Resume](screenshots/resume.png)
+![Resume](screenshot/resume.png)
 
 ### Company Roadmap
 
-![Roadmap](screenshots/roadma1.png)
-![Roadmap](screenshots/roadmap2.png)
+![Roadmap](screenshot/roadma1.png)
+![Roadmap](screenshot/roadmap2.png)
 
 ### DSA Tracker
 
-![DSA](screenshots/dsa.png)
+![DSA](screenshot/dsa.png)
 
 ### Study Plan
 
-![Resume](screenshots/studyplan.png)
+![Resume](screenshot/studyplan.png)
 
 ### Analytics
 
-![Analytics](screenshots/analytics.png)
+![Analytics](screenshot/analytics.png)
 
 ### Profile
 
-![Analytics](screenshots/profile.png)
+![Analytics](screenshot/profile.png)
 
 ## 🛠️ Tech Stack
 
